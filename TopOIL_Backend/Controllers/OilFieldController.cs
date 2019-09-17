@@ -6,10 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TopOIL_Backend.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class OilFieldController : ControllerBase
     {
+        private int pageSize = 2;
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+using TopOIL_Backend.Models;
 
 namespace TopOIL_Backend
 {
@@ -8,5 +8,6 @@ namespace TopOIL_Backend
         public Context(DbContextOptions<Context> options)
             : base(options)
         { }
+        public DbSet<OilField> OilFields { get; set; }
     }
 }
