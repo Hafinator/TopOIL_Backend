@@ -24,13 +24,20 @@ namespace TopOIL_Backend.Controllers
 
         // GET api/values
         [HttpGet]
-        public IActionResult Get() //[FromQuery(Name = "page")] string page
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] string page) //
         {
+            string selectedPage = page;
+            if (page == null)
+            {
+                selectedPage = "1";
+            }
+
             IActionResult result = BadRequest();
             try
             { // TODO add pages
-                var oilField = _context.OilFields;
-                result = Ok(oilField);
+                var oilField = await PaginatedList<OilField>.CreateAsync(_context.OilFields, Convert.ToInt32(selectedPage), pageSize);
+                Tuple<List<OilField>, int> ret = new Tuple<List<OilField>, int>(oilField, oilField.TotalPages);
+                result = Ok(ret);
             }
             catch (Exception e)
             {
