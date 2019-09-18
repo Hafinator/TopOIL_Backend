@@ -1,7 +1,12 @@
-﻿namespace TopOIL_Backend.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TopOIL_Backend.Models
 {
     public class OilField
     {
+        [ScaffoldColumn(false)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public string Name { get; set; }
         public int NumOfEmployees { get; set; }

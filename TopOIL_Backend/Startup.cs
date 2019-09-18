@@ -18,12 +18,10 @@ namespace TopOIL_Backend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
@@ -45,6 +43,9 @@ namespace TopOIL_Backend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(builder =>
+                    builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials()
+                );
             }
 
             app.UseMvc();

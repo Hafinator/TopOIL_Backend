@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TopOIL_Backend.Models;
 
 namespace TopOIL_Backend.Controllers
 {
@@ -23,14 +24,13 @@ namespace TopOIL_Backend.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get([FromQuery(Name = "page")] string page)
+        public IActionResult Get() //[FromQuery(Name = "page")] string page
         {
             IActionResult result = BadRequest();
             try
-            {
-                var oilField = await _context.OilFields.FindAsync(id);
-                _context.Remove(oilField);
-                result = Ok(true);
+            { // TODO add pages
+                var oilField = _context.OilFields;
+                result = Ok(oilField);
             }
             catch (Exception e)
             {
@@ -43,28 +43,53 @@ namespace TopOIL_Backend.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            IActionResult result = BadRequest();
+            try
+            { // TODO add pages
+                var oilField = _context.OilFields.Find(id);
+                result = Ok(oilField);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"EXCEPTION: {e.Message}");
+                result = StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return result;
         }
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] string value)
+        public IActionResult Post([FromBody] OilField value)
         {
             IActionResult result = BadRequest();
+            try
+            {
+
+                var oilField = _context.OilFields.Add(value);
+                _context.SaveChanges();
+                result = Ok(oilField.Entity);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"EXCEPTION: {e.Message}");
+                result = StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
             return result;
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] OilField value)
         {
             IActionResult result = BadRequest();
             try
             {
-                var oilField = await _context.OilFields.FindAsync(id);
-                _context.Remove(oilField);
+                var oilField = _context.OilFields.Update(value);
+                _context.SaveChanges();
                 result = Ok(true);
             }
             catch (Exception e)
@@ -78,13 +103,14 @@ namespace TopOIL_Backend.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public IActionResult Delete(int id)
         {
             IActionResult result = BadRequest();
             try
             {
-                var oilField = await _context.OilFields.FindAsync(id);
+                var oilField = _context.OilFields.Find(id);
                 _context.Remove(oilField);
+                _context.SaveChanges();
                 result = Ok(true);
             }
             catch (Exception e)
