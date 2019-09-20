@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29306.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopOIL_Backend", "TopOIL_Backend.csproj", "{3D2E1CBD-FB48-4357-859A-F833916B885A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TopOIL_Backend", "TopOIL_Backend.csproj", "{3D2E1CBD-FB48-4357-859A-F833916B885A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TopOIL_BackendTest", "..\TopOIL_BackendTest\TopOIL_BackendTest.csproj", "{47AB625A-6F6D-4041-BB87-63E7F6D5B8D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3D2E1CBD-FB48-4357-859A-F833916B885A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D2E1CBD-FB48-4357-859A-F833916B885A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D2E1CBD-FB48-4357-859A-F833916B885A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47AB625A-6F6D-4041-BB87-63E7F6D5B8D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47AB625A-6F6D-4041-BB87-63E7F6D5B8D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47AB625A-6F6D-4041-BB87-63E7F6D5B8D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47AB625A-6F6D-4041-BB87-63E7F6D5B8D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

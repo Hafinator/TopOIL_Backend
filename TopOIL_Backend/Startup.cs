@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-
 namespace TopOIL_Backend
 {
     public class Startup
@@ -28,9 +27,10 @@ namespace TopOIL_Backend
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=TopOIL;Trusted_Connection=True;ConnectRetryCount=0";
+            string connection = @"Server=(localdb)\mssqllocaldb;Database=TopOIL;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<Context>
                 (options => options.UseSqlServer(connection));
+
             // BloggingContext requires
             // using EFGetStarted.AspNetCore.NewDb.Models;
             // UseSqlServer requires

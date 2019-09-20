@@ -24,20 +24,37 @@ namespace TopOIL_Backend.Controllers
 
         // GET api/values
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] string page) //
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] string page, [FromQuery(Name = "search")] string search) //
         {
             string selectedPage = page;
-            if (page == null)
+            if (string.IsNullOrEmpty(page))
             {
                 selectedPage = "1";
             }
 
             IActionResult result = BadRequest();
             try
-            { // TODO add pages
-                var oilField = await PaginatedList<OilField>.CreateAsync(_context.OilFields, Convert.ToInt32(selectedPage), pageSize);
-                Tuple<List<OilField>, int> ret = new Tuple<List<OilField>, int>(oilField, oilField.TotalPages);
-                result = Ok(ret);
+            {
+                PaginatedList<OilField> oilField;
+
+                if (string.IsNullOrEmpty(search))
+                {
+                    oilField = await PaginatedList<OilField>.CreateAsync(_context.OilFields,
+                        Convert.ToInt32(selectedPage),
+                        pageSize);
+                }
+                else
+                {
+                    oilField = await PaginatedList<OilField>.CreateAsync(_context.OilFields
+                        .Where(of => of.Name.Contains(search) || of.Location.Contains(search)),
+                        Convert.ToInt32(selectedPage),
+                        pageSize);
+                }
+
+                Tuple<List<OilField>, int, int> values = new Tuple<List<OilField>, int, int>(oilField, 
+                    oilField.TotalPages,
+                    oilField.PageIndex);
+                result = Ok(values);
             }
             catch (Exception e)
             {
@@ -50,13 +67,19 @@ namespace TopOIL_Backend.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Get(int id)
         {
             IActionResult result = BadRequest();
             try
             { // TODO add pages
-                var oilField = _context.OilFields.Find(id);
-                result = Ok(oilField);
+                OilField oilField = _context.OilFields.Find(id);
+                if (oilField != null)
+                    result = Ok(oilField);
+                else
+                    return NotFound();
+
             }
             catch (Exception e)
             {
@@ -125,7 +148,6 @@ namespace TopOIL_Backend.Controllers
                 Console.WriteLine($"EXCEPTION: {e.Message}");
                 result = StatusCode(StatusCodes.Status500InternalServerError);
             }
-
             return result;
         }
     }
