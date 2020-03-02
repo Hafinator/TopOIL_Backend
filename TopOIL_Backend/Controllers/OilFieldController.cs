@@ -24,7 +24,7 @@ namespace TopOIL_Backend.Controllers
 
         // GET api/values
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery(Name = "page")] string page, [FromQuery(Name = "search")] string search) //
+        public async Task<IActionResult> Get([FromQuery(Name = "page")] string page, [FromQuery(Name = "searchObject")] OilFieldSearch searchObject = null) //
         {
             string selectedPage = page;
             if (string.IsNullOrEmpty(page))
@@ -37,7 +37,7 @@ namespace TopOIL_Backend.Controllers
             {
                 PaginatedList<OilField> oilField;
 
-                if (string.IsNullOrEmpty(search))
+                if (searchObject != null)
                 {
                     oilField = await PaginatedList<OilField>.CreateAsync(_context.OilFields,
                         Convert.ToInt32(selectedPage),
@@ -46,7 +46,12 @@ namespace TopOIL_Backend.Controllers
                 else
                 {
                     oilField = await PaginatedList<OilField>.CreateAsync(_context.OilFields
-                        .Where(of => of.Name.Contains(search) || of.Location.Contains(search)),
+                        .Where(of => of.ID.ToString().Contains(searchObject.ID.ToString()) || 
+                               of.Name.Contains(searchObject.Name) ||
+                               of.Location.Contains(searchObject.Location) ||
+                               of.NumOfEmployees.ToString().Contains(searchObject.NumOfEmployees.ToString()) ||
+                               of.NumOfPumpjacks.ToString().Contains(searchObject.NumOfPumpjacks.ToString()) ||
+                               of.Production.ToString().Contains(searchObject.Production.ToString())),
                         Convert.ToInt32(selectedPage),
                         pageSize);
                 }
@@ -150,5 +155,14 @@ namespace TopOIL_Backend.Controllers
             }
             return result;
         }
+    }
+    public class OilFieldSearch
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public int NumOfEmployees { get; set; }
+        public int Production { get; set; }
+        public int NumOfPumpjacks { get; set; }
+        public string Location { get; set; }
     }
 }
